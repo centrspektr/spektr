@@ -1174,9 +1174,9 @@ function stRender(){const P=$('#stp');if(!P||!ST)return;
     b.disabled=true;await stDo({op:'sset',id,act:a},{ok:'Принят: '+nm+'. Код появится у ученика на сайте',no:'Заявка отклонена',del:'Удалено',hide:'Скрыт из рейтинга',show:'Снова в рейтинге',newcode:'Новый код выдан'}[a])})}
 $('#stBtn').onclick=stOpen;
 /* ---------- сообщения об ошибках с дашбордов (кнопка ⚠, только для редакторов) ---------- */
-let BG=null,BGF='new';const BGS={portal:'Портал',vzlet:'Взлёт',studio:'Гитара и ИИ-студия',agro:'Агрокласс'};
+let BG=null,BGF='new';const BG_SITE='spectr',BGS={spectr:'Спектр',portal:'Портал',vzlet:'Взлёт',studio:'Гитара и ИИ-студия',agro:'Агрокласс'};
 function bgUpd(){const b=$('#bgBtn');if(!b)return;b.style.display=SESS?'':'none';if(!SESS){BG=null;bgCount();return}if(!BG&&!bgUpd.busy){bgUpd.busy=1;bgLoad().finally(()=>bgUpd.busy=0)}}
-async function bgLoad(q){try{BG=await api(q||{op:'buglist'})}catch(e){if(q){toast(e.message);bgRender();return}BG={bugs:[],err:e.message}}bgCount();if($('#bgp'))bgRender()}
+async function bgLoad(q){try{BG=await api(q||{op:'buglist'});BG.bugs=(BG.bugs||[]).filter(x=>x.site===BG_SITE)}catch(e){if(q){toast(e.message);bgRender();return}BG={bugs:[],err:e.message}}bgCount();if($('#bgp'))bgRender()}
 function bgCount(){const n=BG&&BG.bugs?BG.bugs.filter(x=>x.st==='новое').length:0,c=$('#bgCnt');if(c){c.textContent=n||'';c.style.display=n?'':'none'}}
 function bgOpen(){$('#mbody').classList.add('wide');$('#mbody').innerHTML='<div id="bgp"><h3>⚠ Сообщения об ошибках</h3><p style="color:var(--dim)">Загружаю…</p></div>';openM();bgLoad()}
 function bgRender(){const P=$('#bgp');if(!P||!BG)return;
@@ -1184,7 +1184,7 @@ function bgRender(){const P=$('#bgp');if(!P||!BG)return;
   const A=BG.bugs,grp={new:A.filter(x=>x.st==='новое'),work:A.filter(x=>x.st==='в работе'),done:A.filter(x=>x.st==='исправлено')},L=grp[BGF]||[];
   const tabs=[['new','🆕 Новые'],['work','🔧 В работе'],['done','✅ Исправлено']].map(([k,n])=>`<button class="ibtn sm ${BGF===k?'pri':''}" data-bgf="${k}">${n} · ${grp[k].length}</button>`).join('');
   const row=x=>`<div class="strow bgrow"><span class="ic">${x.st==='исправлено'?'✅':x.st==='в работе'?'🔧':'⚠'}</span><span class="nm"><b>${esc(x.kind)} · ${esc(BGS[x.site]||x.site)}</b>${x.text?`<span class="bgt">${esc(x.text)}</span>`:''}<small>${esc(x.when)} · ${esc(x.page)} · ${esc(x.dev)}${x.by?' · закрыл '+esc(x.by):''}</small></span><span class="acts">${x.st!=='в работе'&&x.st!=='исправлено'?`<button class="ibtn sm" data-bg="work" data-id="${x.id}">🔧 Взять</button>`:''}${x.st!=='исправлено'?`<button class="ibtn sm pri" data-bg="done" data-id="${x.id}">✓ Исправлено</button>`:`<button class="ibtn sm" data-bg="new" data-id="${x.id}">↺ Снова</button>`}<button class="ibtn sm" data-bg="del" data-id="${x.id}" title="Удалить">🗑</button></span></div>`;
-  P.innerHTML=`<h3>⚠ Сообщения об ошибках</h3><p style="color:var(--dim);font-size:14px;margin-bottom:10px">Ученики отправляют их кнопкой "Нашёл ошибку? Жми" на Взлёте, в студии и Агроклассе. Сайт, раздел и устройство подставляются сами. Всё хранится в листе "Ошибки" общей таблицы.</p><div class="stchips">${tabs}</div>${L.length?L.map(row).join(''):'<p class="stnone" style="margin-top:12px">'+(BGF==='new'?'Новых сообщений нет 🎉':'Пока пусто.')+'</p>'}<div class="mbar"><button class="ibtn" data-bg="reload">↻ Обновить</button><button class="ibtn pri" onclick="closeM()">Готово</button></div>`;
+  P.innerHTML=`<h3>⚠ Сообщения об ошибках</h3><p style="color:var(--dim);font-size:14px;margin-bottom:10px">Здесь только сообщения со Спектра: их отправляют кнопкой "Нашёл ошибку? Жми" внизу этой страницы. Раздел и устройство подставляются сами.</p><div class="stchips">${tabs}</div>${L.length?L.map(row).join(''):'<p class="stnone" style="margin-top:12px">'+(BGF==='new'?'Новых сообщений нет 🎉':'Пока пусто.')+'</p>'}<div class="mbar"><button class="ibtn" data-bg="reload">↻ Обновить</button><button class="ibtn pri" onclick="closeM()">Готово</button></div>`;
   P.querySelectorAll('[data-bgf]').forEach(b=>b.onclick=()=>{BGF=b.dataset.bgf;bgRender()});
   P.querySelectorAll('[data-bg]').forEach(b=>b.onclick=async()=>{const a=b.dataset.bg;if(a==='reload'){b.disabled=true;await bgLoad();return}
     if(a==='del'&&!confirm('Удалить это сообщение?'))return;b.disabled=true;await bgLoad({op:'bugset',id:b.dataset.id,act:a});if(BG&&!BG.err)toast({work:'Взято в работу',done:'Отмечено: исправлено',new:'Снова в новых',del:'Удалено'}[a])})}
@@ -1593,5 +1593,6 @@ function showVis(n,anim){const el=$('#visC');n=+n;if(!el||!n)return;const i=el.q
   if(location.hash==='#podderzhka'||/[?&]podderzhka\b/.test(location.search))setTimeout(open,700);
 })();
 </script>
+<script src="oshibka.js" data-site="spectr" defer></script>
 </body>
 </html>
