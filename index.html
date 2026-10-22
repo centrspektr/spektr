@@ -20,10 +20,10 @@
 <meta name="theme-color" content="#0b0914">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="spektr-180.png">
-<link rel="manifest" href="manifest.webmanifest">
+<link rel="manifest" href="app.webmanifest">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="СПЕКТР">
+<meta name="apple-mobile-web-app-title" content="Спектр">
 <link rel="preload" as="image" href="logo.webp">
 <script>/* вход на портал всегда в стиле Космос; дальше в этом визите стиль можно менять, клубы его подхватывают */
 try{if(!sessionStorage.getItem('spectr_in')){sessionStorage.setItem('spectr_in','1');localStorage.setItem('spectr_skin','space')}}catch(e){}</script>
@@ -1502,7 +1502,7 @@ function showVis(n,anim){const el=$('#visC');n=+n;if(!el||!n)return;const i=el.q
   var M=$('shM'), IM=$('inM'), dp=null, st={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
   var ua=navigator.userAgent, IOS=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1), MOB=/Android|iPhone|iPad|iPod/i.test(ua)||IOS;
   var APP=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
-  if('serviceWorker' in navigator) addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})});
+  if('serviceWorker' in navigator) addEventListener('load',function(){navigator.serviceWorker.register('sw.js',{scope:'./'}).catch(function(){})});
   addEventListener('beforeinstallprompt',function(e){if(/YaBrowser|YaApp/.test(navigator.userAgent))e.preventDefault();dp=e;inst();bar()});
   addEventListener('appinstalled',function(){dp=null;APP=true;inst();hideBar()});
   /* какой браузер: от него зависит, есть ли кнопка "Установить" в одно касание */
