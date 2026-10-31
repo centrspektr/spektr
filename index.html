@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>СПЕКТР - кружки и расписание</title>
 <meta name="description" content="СПЕКТР - кружки ресурсного центра в Иртышском поселении: расписание занятий, запись в кружки, дашборды клуба БПЛА "Взлёт", Агрокласса и ИИ-студии.">
-<link rel="canonical" href="https://centrspektr.github.io/spektr/">
+<link rel="canonical" href="https://centrspektr.gitverse.site/spektr/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="СПЕКТР">
 <meta property="og:locale" content="ru_RU">
-<meta property="og:url" content="https://centrspektr.github.io/spektr/">
+<meta property="og:url" content="https://centrspektr.gitverse.site/spektr/">
 <meta property="og:title" content="СПЕКТР - кружки и расписание занятий">
 <meta property="og:description" content="Расписание, запись в кружки, дроны, музыка, ИИ, ложкари, рисование и скульптура. Иртышское поселение.">
-<meta property="og:image" content="https://centrspektr.github.io/spektr/og.png">
+<meta property="og:image" content="https://centrspektr.gitverse.site/spektr/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="СПЕКТР - ресурсный центр">
@@ -25,6 +25,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Спектр">
 <link rel="preload" as="image" href="logo.webp">
+<script src="perenos.js"></script>
 <script>/* вход на портал всегда в стиле Космос; дальше в этом визите стиль можно менять, клубы его подхватывают */
 try{if(!sessionStorage.getItem('spectr_in')){sessionStorage.setItem('spectr_in','1');localStorage.setItem('spectr_skin','space')}}catch(e){}</script>
 <script src="fx.js"></script>
@@ -822,7 +823,7 @@ window.skinReset=function(){ST=null;BL=null;shoot=null};
 <script src="SplitText.min.js"></script>
 <script>
 const HUB='spectr', API='https://functions.yandexcloud.net/d4e4vhndceg7scc0mh3b';
-const LINKS={vzlet:'https://centrspektr.github.io/vzlet/', agro:'https://centrspektr.github.io/agroklass/', site:'https://centrspektr.fun', zan:'https://irtysh-zanyatiya.github.io/'};
+const LINKS={vzlet:'https://centrspektr.github.io/vzlet/', agro:'https://centrspektr.gitverse.site/agroklass/', site:'https://centrspektr.fun', zan:'https://irtysh-zanyatiya.github.io/'};
 const SOCIAL={vkVideo:'https://vkvideo.ru/@club237916033', vkVzlet:'https://vk.ru/klubbplavzlet', max:'https://max.ru/join/vXgGYXzwh0p9R1_CUppOus_9Msui9Annkj4HHpaBHVU',
  maxVzlet:'https://max.ru/join/v0ZfpDIihnow9hdwq3vpjm0KiPFW7A0WDfkNlIt9JVs', maxStudio:'https://max.ru/join/x7bqQ0ZGLEmvUJso1aof3ylEJv5K-1x_4cbCWCHaf0A',
  maxZad:'https://max.ru/join/kbsZa2PtRYEwK3ZyDq2WHbf9LNJpv5Wayfh5aRuNz6Y', maxLad:'https://max.ru/join/ssNE1a7VgnRlJd58qOwncUx_051PJLlzmEa6thFGnss', maxOkol:'https://max.ru/join/uw3jH6J-8shUP7GjDbO5fN5dxa_JRXdWENsB-3H2Bhc',
@@ -1488,7 +1489,7 @@ function showVis(n,anim){const el=$('#visC');n=+n;if(!el||!n)return;const i=el.q
   <h3>Поделиться <button class="ibtn sm" id="shX" aria-label="Закрыть">✕</button></h3>
   <p>Наведи камеру телефона на код - откроется СПЕКТР. Оттуда можно перейти в любой кружок.</p>
   <img class="shq" src="qr-spektr.png" alt="QR-код ссылки на СПЕКТР" width="260" height="260">
-  <div class="shu" id="shU">centrspektr.github.io/spektr</div>
+  <div class="shu" id="shU">centrspektr.gitverse.site/spektr</div>
   <div class="shg"><button class="ibtn pri" id="shShare">📤 Поделиться</button><button class="ibtn" id="shCopy">📋 Скопировать</button></div>
 </div></div>
 <div class="shm" id="inM" role="dialog" aria-modal="true" aria-label="Установить СПЕКТР на телефон"><div class="shp">
@@ -1498,7 +1499,7 @@ function showVis(n,anim){const el=$('#visC');n=+n;if(!el||!n)return;const i=el.q
 <div class="shbar" id="shBar" role="dialog" aria-label="Установить СПЕКТР"><img src="icon-192.png" alt=""><div id="shBarT"><b>СПЕКТР на экран телефона</b>Открывается одним касанием, как приложение</div><button class="ibtn pri sm" id="shBarGo">Установить</button><button class="ibtn sm" id="shBarX" aria-label="Не сейчас">✕</button></div>
 <script>
 (function(){
-  var URL0='https://centrspektr.github.io/spektr/', $=function(i){return document.getElementById(i)};
+  var URL0='https://centrspektr.gitverse.site/spektr/', $=function(i){return document.getElementById(i)};
   var M=$('shM'), IM=$('inM'), dp=null, st={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
   var ua=navigator.userAgent, IOS=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1), MOB=/Android|iPhone|iPad|iPod/i.test(ua)||IOS;
   var APP=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
@@ -1510,7 +1511,7 @@ function showVis(n,anim){const el=$('#visC');n=+n;if(!el||!n)return;const i=el.q
   var INAPP=/; wv\)|VKAndroidApp|VKClient|vkontakte|Telegram|Instagram|FBAN|FBAV|OdnoklassnikiApp|OKApp|ru\.oneme|OneMe|MAXApp|\bMAX\//i.test(ua)||(IOS&&!/Safari\//.test(ua)&&!/CriOS|FxiOS|YaBrowser|EdgiOS/.test(ua));
   var BR=/YaBrowser|YaApp/.test(ua)?'ya':/SamsungBrowser/.test(ua)?'samsung':/Firefox|FxiOS/.test(ua)?'ff':/OPR\/|Opera/.test(ua)?'opera':/EdgA|EdgiOS/.test(ua)?'edge':/MiuiBrowser|HuaweiBrowser|HeyTapBrowser/.test(ua)?'other':'chrome';
   var YA=BR==='ya'&&AND;
-  function intent(pkg){return 'intent://centrspektr.github.io/spektr/?install#Intent;scheme=https;package='+pkg+';S.browser_fallback_url='+encodeURIComponent(URL0+'?install')+';end'}
+  function intent(pkg){return 'intent://centrspektr.gitverse.site/spektr/?install#Intent;scheme=https;package='+pkg+';S.browser_fallback_url='+encodeURIComponent(URL0+'?install')+';end'}
   /* окно установки: один короткий блок под браузер */
   var D='<p class="ins-t">';
   function S(n,b,t){return '<div class="stp"><i>'+n+'</i><div><b>'+b+'</b>'+(t||'')+'</div></div>'}
