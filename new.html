@@ -823,7 +823,7 @@ window.skinReset=function(){ST=null;BL=null;shoot=null};
 <script src="SplitText.min.js"></script>
 <script>
 const HUB='spectr', API='https://functions.yandexcloud.net/d4e4vhndceg7scc0mh3b';
-const LINKS={vzlet:'https://centrspektr.github.io/vzlet/', agro:'https://centrspektr.gitverse.site/agroklass/', site:'https://centrspektr.fun', zan:'https://irtysh-zanyatiya.github.io/'};
+const LINKS={vzlet:'https://centrspektr.gitverse.site/vzlet/', agro:'https://centrspektr.gitverse.site/agroklass/', site:'https://centrspektr.fun', zan:'https://irtysh-zanyatiya.github.io/'};
 const SOCIAL={vkVideo:'https://vkvideo.ru/@club237916033', vkVzlet:'https://vk.ru/klubbplavzlet', max:'https://max.ru/join/vXgGYXzwh0p9R1_CUppOus_9Msui9Annkj4HHpaBHVU',
  maxVzlet:'https://max.ru/join/v0ZfpDIihnow9hdwq3vpjm0KiPFW7A0WDfkNlIt9JVs', maxStudio:'https://max.ru/join/x7bqQ0ZGLEmvUJso1aof3ylEJv5K-1x_4cbCWCHaf0A',
  maxZad:'https://max.ru/join/kbsZa2PtRYEwK3ZyDq2WHbf9LNJpv5Wayfh5aRuNz6Y', maxLad:'https://max.ru/join/ssNE1a7VgnRlJd58qOwncUx_051PJLlzmEa6thFGnss', maxOkol:'https://max.ru/join/uw3jH6J-8shUP7GjDbO5fN5dxa_JRXdWENsB-3H2Bhc',
@@ -843,7 +843,7 @@ const stKey=l=>l.sk||l.id||'';
 const stApply=(l,m)=>{const v=m[stKey(l)];return ST_N[v]?{...l,url:'',note:ST_N[v],_st:v}:{...l,_st:v||''}};
 const MAXG=g=>{const l=String(g.link||''),n=String(g.name||'');return /vzlet/.test(l)?SOCIAL.maxVzlet:/studio/.test(l)?SOCIAL.maxStudio:/скульпт|рисов/i.test(n)?SOCIAL.maxArt:/лит\.?\s*ra/i.test(n)?SOCIAL.maxLit:/задорин/i.test(n)?SOCIAL.maxZad:/ладушк/i.test(n)?SOCIAL.maxLad:/околиц/i.test(n)?SOCIAL.maxOkol:''};
 const VKG=g=>/vzlet/.test(String(g.link||''))?SOCIAL.vkVzlet:'';
-const JOIN=g=>{const l=String(g.link||'');return /vzlet/.test(l)?'https://centrspektr.github.io/vzlet/#rate':/studio/.test(l)?'https://centrspektr.github.io/studio/#rate':/agroklass/.test(l)?'':'#'};
+const JOIN=g=>{const l=String(g.link||'');return /vzlet/.test(l)?'https://centrspektr.gitverse.site/vzlet/#rate':/studio/.test(l)?'https://centrspektr.github.io/studio/#rate':/agroklass/.test(l)?'':'#'};
 const DASH=[
  {id:'vzlet',n:'Клуб "Взлёт"',img:'vzlet.webp',tags:['FPV','БПЛА'],t:'Рейтинг пилотов, шпаргалки, тесты, калькуляторы и тренажёр стиков.',u:LINKS.vzlet},
  {id:'studio',n:'Гитара и ИИ-студия',img:'studio.webp',tags:['Музыка','ИИ'],t:'Аккорды со звуком, тренажёр смены аккордов, тюнер, метроном и создание музыки с ИИ.',u:'https://centrspektr.github.io/studio/'},
@@ -852,7 +852,7 @@ const WORDS=['гонки на дронах','музыка','нейросети',
 const BUK="Буканова Кулян Канатовна", LANG="Ланглиц Александр Давыдович";
 const SEED={"groups":[
  {"id":"ai","name":"ИИ-студия: музыка будущего","who":"","ages":"5-11 кл","desc":"Гитара плюс нейросети: пишем, аранжируем и сводим свои треки.","color":"#d946ef","art":"music","link":"https://centrspektr.github.io/studio/"},
- {"id":"vzlet","name":"Клуб БПЛА \"Взлёт\"","who":"Наумов Александр Александрович","ages":"1-11 кл","desc":"FPV-пилотирование: симулятор, полёты и гонки дронов.","color":"#06b6d4","art":"drone","link":"https://centrspektr.github.io/vzlet/"},
+ {"id":"vzlet","name":"Клуб БПЛА \"Взлёт\"","who":"Наумов Александр Александрович","ages":"1-11 кл","desc":"FPV-пилотирование: симулятор, полёты и гонки дронов.","color":"#06b6d4","art":"drone","link":"https://centrspektr.gitverse.site/vzlet/"},
  {"id":"okol","name":"Ансамбль \"Околица\"","who":BUK+" (руководитель)","ages":"взрослый ансамбль","desc":"","color":"#dc2626","art":"mic","link":""},
  {"id":"zad","name":"Ложкари \"Задоринки\"","who":BUK,"ages":"детский ансамбль","desc":"","color":"#ca8a04","art":"spoons","link":""},
  {"id":"lad","name":"Ложкари \"Ладушки\"","who":BUK,"ages":"детский ансамбль","desc":"","color":"#ea580c","art":"spoons","link":""},
@@ -1137,7 +1137,7 @@ $('#seedBtn').onclick=async()=>{ if(!canEdit())return;
 
 /* ---------- ученики: заявки, личные коды, очки за задания ---------- */
 var ST=null,STF="all",STSEL=new Set(),STPTS=null;
-const STN={vzlet:'Взлёт',studio:'ИИ-студия',agro:'Агрокласс'}, STU={vzlet:'https://centrspektr.github.io/vzlet/#rate',studio:'https://centrspektr.github.io/studio/#rate'};
+const STN={vzlet:'Взлёт',studio:'ИИ-студия',agro:'Агрокласс'}, STU={vzlet:'https://centrspektr.gitverse.site/vzlet/#rate',studio:'https://centrspektr.github.io/studio/#rate'};
 function stUpd(){bgUpd();const b=$('#stBtn');if(!b)return;b.style.display=SESS?'':'none';if(!SESS){ST=null;stCount();return}if(!ST&&!stUpd.busy){stUpd.busy=1;stLoad().finally(()=>stUpd.busy=0)}}
 async function stLoad(){try{ST=await api({op:'slist'})}catch(e){ST={list:[],clubs:[],tasks:[],err:e.message}}stCount();if($('#stp'))stRender()}
 function stCount(){const n=ST&&ST.list?ST.list.filter(x=>x.st==='заявка').length:0,c=$('#stCnt');if(c){c.textContent=n||'';c.style.display=n?'':'none'}}
