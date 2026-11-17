@@ -1237,7 +1237,7 @@ $('#joinEdit').onclick=()=>{if(!canEdit())return;const d=jnData();
 /* плашка "БЕТА" на дашбордах Взлёта и студии (put.js): текст хранится здесь, запись "бета-плашка"; дашборды подхватывают его в течение часа */
 const BT_TAG='бета-плашка', BT_DEF={h:'Дашборд в бета-версии: тестируем вместе',top:'Ребята, вы первые! Дашборд ещё дорабатывается, и вы помогаете его тестировать.',
   li:['Очки иногда могут обнуляться, а задания меняться.','Заявки подтверждаем быстро.','У заданий курса есть кнопки 👍 и 👎. Понравилось - жми 👍, скучно или непонятно - 👎. По ним тренер правит и меняет задания.','Вместе сделаем удобное место для зачётов, рейтинга, тестов, тренировок и шпаргалок.'],
-  bot:'Что-то не работает или есть идея? Жми "Нашёл ошибку?" внизу справа.'};
+  bot:'Что-то не работает или есть идея? Нажми значок «?» внизу справа.'};
 const btItem=()=>D.news.find(x=>x.date===BT_TAG);
 function btData(){const it=btItem();if(it)try{const o=JSON.parse(it.text);if(o&&o.h&&Array.isArray(o.li))return o}catch(e){}return BT_DEF}
 $('#btEdit').onclick=()=>{if(!canEdit())return;const d=btData();
@@ -1614,6 +1614,6 @@ function showVis(n,anim){const el=$('#visC');n=+n;if(!el||!n)return;const i=el.q
   if(location.hash==='#podderzhka'||/[?&]podderzhka\b/.test(location.search))setTimeout(open,700);
 })();
 </script>
-<script src="oshibka.js" data-site="spectr" defer></script>
+<script src="oshibka2.js" data-site="spectr" defer></script>
 </body>
 </html>
