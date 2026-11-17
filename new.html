@@ -97,7 +97,7 @@ header:not(.solid) .tr .ibtn{background:rgba(255,255,255,.1);border-color:rgba(2
 .ibtn.sm{height:32px;font-size:13px;padding:0 11px;border-radius:10px} .ibtn:disabled{opacity:.6;cursor:default}
 @media(max-width:820px){nav.mn{display:none}.tr{margin-left:auto}}
 /* вход на портал: долгое нажатие на свечение вокруг круга СПЕКТР (без видимой кнопки) */
-.lw{-webkit-touch-callout:none}.lw.pt .ring{opacity:.62;transition:opacity .9s ease-in}
+.hero{-webkit-touch-callout:none}.lw.pt .ring{opacity:.62;transition:opacity .9s ease-in}
 /* ---- hero ---- */
 .hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;overflow:hidden;color:#fff;background:radial-gradient(120% 120% at 20% 0%,#2b0f63 0%,#0b0914 58%),#0b0914;isolation:isolate}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
@@ -1403,15 +1403,21 @@ setTimeout(applySpd,300);
 
 /* ---------- шарики и бегущая строка: можно поймать пальцем ---------- */
 /* логотип с шариками: крути пальцем, после отпускания крутится по инерции и плавно замедляется */
-(function(){/* портал: удержание ~0,9 с на свечении вокруг круга СПЕКТР */
-  const lw=$('#lw'),go=$('#irtGo');if(!lw||!go)return;let t=0,sx=0,sy=0;
+(function(){/* портал: удержание ~0,9 с на свечении-галактике рядом с кругом СПЕКТР (та же геометрия, что в fx.js) */
+  const hero=$('.hero'),lw=$('#lw'),go=$('#irtGo');if(!hero||!lw||!go)return;let t=0,sx=0,sy=0;
   const stop=()=>{clearTimeout(t);t=0;lw.classList.remove('pt')};
-  lw.addEventListener('contextmenu',e=>e.preventDefault());
-  lw.addEventListener('pointerdown',e=>{if(e.button>0)return;const r=lw.getBoundingClientRect(),d=Math.hypot(e.clientX-r.left-r.width/2,e.clientY-r.top-r.height/2)/r.width;
-    if(d<.4||d>.5)return;stop();sx=e.clientX;sy=e.clientY;lw.classList.add('pt');
+  const skip='a,button,input,select,textarea,h1,.kick,.lead,.chips,.cta,.rot,nav,header,.top';
+  const inGal=(x,y)=>{const W=innerWidth,H=innerHeight,gsz=Math.min(1100,Math.max(W,H)*.95),a=gsz*.46*.8,b=a*.42,
+      gx=W*(W<700?.62:.68),gy=H*.36-Math.min(scrollY*.12,H*.25),dx=x-gx,dy=y-gy,c=Math.cos(.42),s=Math.sin(.42),
+      u=dx*c-dy*s,v=dx*s+dy*c;return (u*u)/(a*a)+(v*v)/(b*b)<=1};
+  const onDisc=(x,y)=>{const r=lw.getBoundingClientRect();return Math.hypot(x-r.left-r.width/2,y-r.top-r.height/2)<r.width*.4};
+  const zone=e=>{if(e.button>0||!hero.contains(e.target)||e.target.closest(skip))return false;
+    const r=hero.getBoundingClientRect();if(e.clientY<r.top||e.clientY>r.bottom)return false;return !onDisc(e.clientX,e.clientY)&&(inGal(e.clientX,e.clientY)||lw.contains(e.target))};
+  hero.addEventListener('contextmenu',e=>{if(zone(e)||t)e.preventDefault()});
+  hero.addEventListener('pointerdown',e=>{if(!zone(e))return;stop();sx=e.clientX;sy=e.clientY;lw.classList.add('pt');
     t=setTimeout(()=>{stop();try{navigator.vibrate&&navigator.vibrate(25)}catch(_){}location.href=go.href},900)});
-  lw.addEventListener('pointermove',e=>{if(t&&Math.hypot(e.clientX-sx,e.clientY-sy)>12)stop()});
-  ['pointerup','pointercancel','pointerleave'].forEach(n=>lw.addEventListener(n,stop));
+  hero.addEventListener('pointermove',e=>{if(t&&Math.hypot(e.clientX-sx,e.clientY-sy)>12)stop()});
+  ['pointerup','pointercancel'].forEach(n=>hero.addEventListener(n,stop));
   addEventListener('scroll',stop,{passive:true});
 })();
 (function(){const lw=$('#lw');if(!lw)return;const parts=[lw.querySelector('.ring'),lw.querySelector('.orb'),lw.querySelector('.dr')].filter(Boolean),img=lw.querySelector('img');
