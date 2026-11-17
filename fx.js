@@ -83,7 +83,7 @@ function space(t,dt,y0,y1,dk){if(!S.st)spaceInit();var sc=scrollY,cxp=W*(.5+(mx-
   S.ga+=dt*(.000035+Math.min(.0006,Math.abs(vel)*.0000006));
   var gsz=Math.min(1100,Math.max(W,H)*(LITE?1.05:.95)),gx=W*(W<700?.62:.68)+(mx-.5)*-40,gy=H*.36-Math.min(sc*.12,H*.25)+(my-.5)*-30;
   cx.globalAlpha=dk?1:.5;cx.save();cx.translate(gx,gy);cx.rotate(-.42);cx.scale(1,.42);cx.rotate(S.ga);cx.drawImage(S.g1,-gsz/2,-gsz/2,gsz,gsz);cx.restore();
-  var g2=gsz*.22;cx.globalAlpha=dk?.85:.4;cx.save();cx.translate(W*.16+(mx-.5)*-20,H*.78-Math.min(sc*.07,H*.2));cx.rotate(.5);cx.scale(1,.55);cx.rotate(-S.ga*1.6);cx.drawImage(S.g2,-g2/2,-g2/2,g2,g2);cx.restore();
+  if(!window.FX_NO_G2){var g2=gsz*.22;cx.globalAlpha=dk?.85:.4;cx.save();cx.translate(W*.16+(mx-.5)*-20,H*.78-Math.min(sc*.07,H*.2));cx.rotate(.5);cx.scale(1,.55);cx.rotate(-S.ga*1.6);cx.drawImage(S.g2,-g2/2,-g2/2,g2,g2);cx.restore();}
   // звёзды летят навстречу: прокрутка вниз - летим вперёд, вверх - назад
   var sp=.00009+vel*.0000011+boost*.0006;sp=Math.max(-.004,Math.min(.006,sp));var streak=Math.abs(sp)>.0006;
   cx.lineCap='round';
