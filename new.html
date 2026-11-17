@@ -1403,16 +1403,15 @@ setTimeout(applySpd,300);
 
 /* ---------- шарики и бегущая строка: можно поймать пальцем ---------- */
 /* логотип с шариками: крути пальцем, после отпускания крутится по инерции и плавно замедляется */
-(function(){/* портал: удержание ~0,9 с на свечении-галактике рядом с кругом СПЕКТР (та же геометрия, что в fx.js) */
+(function(){/* портал: удержание ~0,9 с на маленькой галактике внизу слева под текстом «Кружки, занятия и новости» (геометрия как в fx.js) */
   const hero=$('.hero'),lw=$('#lw'),go=$('#irtGo');if(!hero||!lw||!go)return;let t=0,sx=0,sy=0;
   const stop=()=>{clearTimeout(t);t=0;lw.classList.remove('pt')};
   const skip='a,button,input,select,textarea,h1,.kick,.lead,.chips,.cta,.rot,nav,header,.top';
-  const inGal=(x,y)=>{const W=innerWidth,H=innerHeight,gsz=Math.min(1100,Math.max(W,H)*.95),a=gsz*.46*.8,b=a*.42,
-      gx=W*(W<700?.62:.68),gy=H*.36-Math.min(scrollY*.12,H*.25),dx=x-gx,dy=y-gy,c=Math.cos(.42),s=Math.sin(.42),
-      u=dx*c-dy*s,v=dx*s+dy*c;return (u*u)/(a*a)+(v*v)/(b*b)<=1};
-  const onDisc=(x,y)=>{const r=lw.getBoundingClientRect();return Math.hypot(x-r.left-r.width/2,y-r.top-r.height/2)<r.width*.4};
+  const inGal=(x,y)=>{const W=innerWidth,H=innerHeight,g2=Math.min(1100,Math.max(W,H)*.95)*.22,a=g2*.46*1.3,b=a*.6,
+      gx=W*.16,gy=H*.78-Math.min(scrollY*.07,H*.2),dx=x-gx,dy=y-gy,c=Math.cos(.5),s=Math.sin(.5),
+      u=dx*c+dy*s,v=-dx*s+dy*c;return (u*u)/(a*a)+(v*v)/(b*b)<=1};
   const zone=e=>{if(e.button>0||!hero.contains(e.target)||e.target.closest(skip))return false;
-    const r=hero.getBoundingClientRect();if(e.clientY<r.top||e.clientY>r.bottom)return false;return !onDisc(e.clientX,e.clientY)&&(inGal(e.clientX,e.clientY)||lw.contains(e.target))};
+    const r=hero.getBoundingClientRect();if(e.clientY<r.top||e.clientY>r.bottom)return false;return inGal(e.clientX,e.clientY)};
   hero.addEventListener('contextmenu',e=>{if(zone(e)||t)e.preventDefault()});
   hero.addEventListener('pointerdown',e=>{if(!zone(e))return;stop();sx=e.clientX;sy=e.clientY;lw.classList.add('pt');
     t=setTimeout(()=>{stop();try{navigator.vibrate&&navigator.vibrate(25)}catch(_){}location.href=go.href},900)});
