@@ -164,7 +164,7 @@ html[data-skin="pixel"] .lw{--hc:#fff;--hs:#7dff6a;--hd:#ffd84a}
 .lwh .cap{fill:var(--hs);stroke:rgba(10,6,30,.6);stroke-width:.5}
 .tked{position:absolute;right:16px;bottom:2px;z-index:3}
 .mqw.tkoff{display:none} body.editing .mqw.tkoff{display:block;opacity:.35}
-.tkhd{position:absolute;right:170px;bottom:2px;z-index:3}
+.tkhd{position:absolute;left:16px;bottom:2px;z-index:3}
 
 .mq span{font:900 clamp(18px,3vw,28px) var(--fh);color:#fff;white-space:nowrap;padding:0 22px;text-shadow:0 2px 12px rgba(0,0,0,.25)}
 .mq span::after{content:"✦";margin-left:44px;opacity:.85}
@@ -905,6 +905,8 @@ const hasStudio=()=>D.groups.some(g=>isStu(g));
 /* кружок Лит.ra: тоже показываем сами, пока его нет в таблице */
 const LIT_G={id:'_lit',name:'Лит.ra',who:'Наумова Наталья Геннадьевна',ages:'',place:'',desc:'',color:'#0ea5e9',art:'book',link:''};
 const isLit=g=>/лит\.?\s*ra/i.test(g.name||'');
+const AGRO_G={id:'_agro',name:'Агрокласс',who:'',ages:'',place:'',desc:'Дроны в агросфере, лаборатория Python, ИИ-лаборатория, промпты и рейтинг класса.',color:'#16a34a',art:'sprout',link:LINKS.agro};
+const isAgro=g=>/agroklass/.test(g.link||'')||/агрокласс/i.test(g.name||'');
 const VIRT={_studio:STUDIO_G,_lit:LIT_G};
 const isStu=g=>/studio/.test(g.link||'')||/гитар/i.test(g.name||'');
 const GL=()=>{const S=D.groups.filter(isStu),a=D.groups.filter(g=>!isStu(g)),i=a.findIndex(g=>/vzlet/.test(g.link||''));a.splice(i<0?0:i+1,0,...(S.length?S:[STUDIO_G]));if(!D.groups.some(isLit))a.push(LIT_G);return a};
@@ -1056,7 +1058,7 @@ function openForm(key,id){
   const F=FORMS[key],it=id?D[key].find(x=>x.id===id)||{}:{date:new Date().toLocaleDateString('ru-RU'),color:COLORS[D.groups.length%COLORS.length],art:'star',day:DAYSEL};
   const ctl=([k,l,t])=>{const v=k==='_fm'?(id?FM().has(id):true):it[k]??'';
     if(t==='area')return `<label>${l}<textarea data-k="${k}">${esc(v)}</textarea></label>`;
-    if(t==='group')return `<label>${l}<select data-k="${k}">${D.groups.map(g=>`<option value="${esc(g.id)}" ${g.id===v?'selected':''}>${esc(g.name)}</option>`).join('')}</select></label>`;
+    if(t==='group')return `<label>${l}<select data-k="${k}">${D.groups.concat(D.groups.some(isAgro)?[]:[AGRO_G]).map(g=>`<option value="${esc(g.id)}" ${g.id===v?'selected':''}>${esc(g.name)}</option>`).join('')}</select></label>`;
     if(t==='day')return `<label>${l}<select data-k="${k}">${DAYS.map(d=>`<option ${d===v?'selected':''}>${d}</option>`).join('')}</select></label>`;
     if(t==='art')return `<label>${l}<select data-k="${k}">${Object.entries(ART).map(([a,e])=>`<option value="${a}" ${a===v?'selected':''}>${a==='drone'?'квадрокоптер':e+' '+a}</option>`).join('')}</select></label>`;
     if(t==='color')return `<label>${l}<input data-k="${k}" type="color" value="${esc(v||'#7c3aed')}" style="height:46px;padding:4px"></label>`;
@@ -1064,7 +1066,8 @@ function openForm(key,id){
     return `<label>${l}<input data-k="${k}" value="${esc(v)}"></label>`};
   $('#mbody').innerHTML=`<h3>${id?'Изменить':'Добавить'}: ${F.t.toLowerCase()}</h3>${key==='schedule'&&!D.groups.length?'<p>Сначала добавьте кружок.</p>':F.f.map(ctl).join('')}<div class="mbar">${id?'<button class="ibtn del" id="fDel">Удалить</button>':''}<button class="ibtn" onclick="closeM()">Отмена</button><button class="ibtn pri" id="fSave">Сохранить</button></div>`;openM();
   $('#fSave').onclick=async()=>{const b=$('#fSave'),item={id:id||''};$$('#mbody [data-k]').forEach(e=>item[e.dataset.k]=e.type==='checkbox'?e.checked:e.value.trim());
-    b.disabled=true;b.textContent='Сохраняю…';const fm=item._fm;delete item._fm;try{const j=await api({op:'hput',hub:HUB,key,item});D=j.data;
+    b.disabled=true;b.textContent='Сохраняю…';const fm=item._fm;delete item._fm;try{if(key==='schedule'&&item.group==='_agro'){const j0=await api({op:'hput',hub:HUB,key:'groups',item:Object.assign({},AGRO_G,{id:''})});D=j0.data;const ag=D.groups.filter(isAgro).pop();if(ag)item.group=ag.id}
+  const j=await api({op:'hput',hub:HUB,key,item});D=j.data;
       if(key==='groups'){const g=id?grp(id):D.groups.filter(x=>x.name===item.name).pop();if(g)await setForming(g.id,!!fm)}
       ls.set('hub_'+HUB,JSON.stringify(D));closeM();render();toast('Сохранено')}catch(e){toast(e.message);b.disabled=false;b.textContent='Сохранить'}};
   if($('#fDel'))$('#fDel').onclick=async()=>{if(!confirm('Удалить запись?'))return;try{const j=await api({op:'hdel',hub:HUB,key,id});D=j.data;ls.set('hub_'+HUB,JSON.stringify(D));closeM();render();toast('Удалено')}catch(e){toast(e.message)}};
