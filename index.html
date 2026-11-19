@@ -905,7 +905,7 @@ const hasStudio=()=>D.groups.some(g=>isStu(g));
 /* кружок Лит.ra: тоже показываем сами, пока его нет в таблице */
 const LIT_G={id:'_lit',name:'Лит.ra',who:'Наумова Наталья Геннадьевна',ages:'',place:'',desc:'',color:'#0ea5e9',art:'book',link:''};
 const isLit=g=>/лит\.?\s*ra/i.test(g.name||'');
-const AGRO_G={id:'_agro',name:'Агрокласс',who:'',ages:'',place:'',desc:'Дроны в агросфере, лаборатория Python, ИИ-лаборатория, промпты и рейтинг класса.',color:'#16a34a',art:'sprout',link:LINKS.agro};
+const AGRO_G={id:'_agro',name:'Агрокласс',who:'Наумов Александр Александрович',ages:'',place:'',desc:'Дроны в агросфере, лаборатория Python, ИИ-лаборатория, промпты и рейтинг класса.',color:'#16a34a',art:'sprout',link:LINKS.agro};
 const isAgro=g=>/agroklass/.test(g.link||'')||/агрокласс/i.test(g.name||'');
 const VIRT={_studio:STUDIO_G,_lit:LIT_G};
 const isStu=g=>/studio/.test(g.link||'')||/гитар/i.test(g.name||'');
@@ -975,6 +975,7 @@ async function loadVz(){try{const r=await fetch('https://functions.yandexcloud.n
   VZS=L;ls.set('vz_sched',JSON.stringify(L));render()}catch(e){}}
 function vzMerge(){const g=D.groups.find(x=>/vzlet/.test(x.link||''));D.schedule=D.schedule.filter(x=>!x._x).concat(g?VZS.map(x=>Object.assign({},x,{group:g.id})):[])}
 function render(){
+  D.groups.forEach(g=>{if(isAgro(g)&&!g.who)g.who=AGRO_G.who});
   vzMerge();
   const n=new Date(),td=dayName(n),nm=n.getHours()*60+n.getMinutes();
   $('#heroChips').innerHTML=`<span class="chip">🎯 ${D.groups.length} ${pl(D.groups.length,'направление','направления','направлений')}</span>${D.schedule.length?`<span class="chip">🗓 ${D.schedule.length} ${pl(D.schedule.length,'занятие','занятия','занятий')} в неделю</span>`:''}<span class="chip">🚀 ${DASH.length} дашборда</span>`;
