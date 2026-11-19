@@ -272,6 +272,13 @@ footer .fdev{max-width:560px;margin:0 auto 18px;padding:0 16px;font:700 17px/1.4
 footer .fdev .ibtn{flex:none}
 footer .fsup{margin:0 auto 18px;height:46px;padding:0 22px;font-size:15px}
 footer .fsm{font-size:13px}
+footer .fauth{margin-top:14px;font-size:12px;opacity:.8}
+footer .fterms{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+footer .fterms:hover{color:var(--c1)}
+.terms p{font-size:14px;margin-top:8px}
+.terms ul{margin:6px 0 0 20px;font-size:14px}
+.terms li{margin-top:4px}
+.terms .tcopy{margin-top:14px;font-size:13px;color:var(--dim)}
 html[data-skin="pixel"] footer .fdev{font-size:11px;line-height:1.8}
 footer .fl a{padding:8px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text);text-decoration:none;font-weight:700;font-size:13.5px}
 footer .fl a:hover{border-color:var(--c1)}
@@ -816,7 +823,7 @@ window.skinReset=function(){ST=null;BL=null;shoot=null};
 
 
 </main>
-<footer><img src="logo.webp" alt="Логотип СПЕКТР"><p class="fdev"><span id="fDev"></span><button class="ibtn sm ed" id="dvEdit" type="button">✎</button></p><a class="ibtn pri fsup" id="fSup" href="#podderzhka">💛 Поддержать проект</a><div class="fsm">Ресурсный центр "СПЕКТР" · Иртышское поселение · Черлакский район<span id="upd"></span></div></footer>
+<footer><img src="logo.webp" alt="Логотип СПЕКТР"><p class="fdev"><span id="fDev"></span><button class="ibtn sm ed" id="dvEdit" type="button">✎</button></p><a class="ibtn pri fsup" id="fSup" href="#podderzhka">💛 Поддержать проект</a><div class="fsm">Ресурсный центр "СПЕКТР" · Иртышское поселение · Черлакский район<span id="upd"></span></div><p class="fauth">Автор: Александр Наумов, 2026. <button type="button" class="fterms" id="termsBtn">Условия</button></p></footer>
 
 <div id="dive"></div>
 <div id="soon"></div>
@@ -1042,6 +1049,8 @@ async function api(q){let j;try{j=await (await fetch(API,{method:'POST',body:JSO
   if(!j.ok){if(j.auth){SESS=null;try{sessionStorage.removeItem('spectr_sess')}catch(e){}applyUser()}throw new Error(j.error||'Ошибка сервера')}return j}
 function openM(){$('#modal').classList.add('on')} function closeM(){$('#modal').classList.remove('on');$('#mbody').classList.remove('wide')}
 $('#modal').onclick=e=>{if(e.target.id==='modal')closeM()}; addEventListener('keydown',e=>{if(e.key==='Escape'){closeM();$('#soon').style.display='none'}});
+function termsOpen(){$('#mbody').innerHTML=`<div class="terms"><h3>Условия использования</h3><p>Сайт "СПЕКТР" - авторская работа Александра Наумова, 2026. Автору принадлежат устройство сайта, тексты, оформление и программный код.</p><p><b>Можно:</b> пользоваться сайтом и делиться ссылкой на него.</p><p><b>Нельзя без письменного разрешения автора:</b></p><ul><li>копировать сайт или его части;</li><li>переделывать и выдавать за своё;</li><li>убирать имя автора;</li><li>продавать или передавать за плату.</li></ul><p>Если нужен такой сайт для школы или кружка, напишите автору.</p><p>Сторонние части - шрифты (Unbounded, Manrope, Comfortaa, Nunito, Press Start 2P) и библиотека анимации GSAP (с ScrollTrigger и SplitText) - принадлежат их авторам и используются по их лицензиям.</p><p class="tcopy">© 2026 Александр Наумов. Все права защищены.</p><div class="mbar"><button class="ibtn pri" onclick="closeM()">Понятно</button></div></div>`;openM()}
+document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('#termsBtn'))termsOpen()});
 function openLogin(){$('#mbody').innerHTML=`<h3>Вход для редакторов</h3><p style="color:var(--dim);font-size:14px">Введите PIN. Править расписание, кружки и новости могут администратор и редакторы Спектра.</p><label>PIN<input id="pin" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></label><div class="mbar"><button class="ibtn" onclick="closeM()">Отмена</button><button class="ibtn pri" id="pinGo">Войти</button></div>`;openM();setTimeout(()=>$('#pin').focus(),50);
   const go=async()=>{const b=$('#pinGo');b.disabled=true;b.textContent='Проверяю…';try{const j=await api({op:'login',pin:$('#pin').value.trim()});SESS={token:j.token,user:j.user};ss.set('spectr_sess',JSON.stringify(SESS));ls.set('spectr_editor','1');closeM();render();toast(canEdit()?'Режим редактирования включён':'Вход выполнен, но прав на Спектр нет')}catch(e){toast(e.message);b.disabled=false;b.textContent='Войти'}};
   $('#pinGo').onclick=go;$('#pin').onkeydown=e=>{if(e.key==='Enter')go()}}
