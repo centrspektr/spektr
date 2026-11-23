@@ -31,7 +31,9 @@ page() {
       hash = (hash ? hash + '&' : '') + 'perenos=' + encodeURIComponent(btoa(bin));
     } catch (e) {}
   }
-  location.replace('$NEW_SITE' + location.pathname + location.search + (hash ? '#' + hash : ''));
+  var p = location.pathname;
+  if (location.search && /\/$/.test(p)) p += 'index.html'; /* GitVerse на адрес папки с ?... отвечает 404 */
+  location.replace('$NEW_SITE' + p + location.search + (hash ? '#' + hash : ''));
 })();
 </script>
 <meta http-equiv="refresh" content="3; url=$NEW_SITE/spektr/">
