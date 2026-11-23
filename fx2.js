@@ -216,7 +216,7 @@ function loop(ts){if(!run)return;requestAnimationFrame(loop);var dt=ts-lt;
     if(fq){if(!fpsEl){fpsEl=D.createElement('div');fpsEl.style.cssText='position:fixed;right:8px;bottom:8px;z-index:99999;padding:6px 10px;border-radius:8px;background:rgba(0,0,0,.75);color:#0f0;font:700 13px monospace;pointer-events:none';D.body.appendChild(fpsEl)}
       fpsEl.textContent=Math.round(1000/avg)+' fps · кадр '+avg.toFixed(1)+' мс · фон '+cv.width+'x'+cv.height+(LITE?' · лёгкий':'')}}
   frame(ts);lt=ts}
-function start(){if(run||RED)return;run=true;lt=performance.now();requestAnimationFrame(loop)}
+function start(){if(run||RED||document.documentElement.classList.contains("mn"))return;run=true;lt=performance.now();requestAnimationFrame(loop)}
 function stop(){run=false}
 D.addEventListener('visibilitychange',function(){D.hidden?stop():start()});
 function boot(){size();lastW=innerWidth;if(window.SKIN&&SKIN.on)SKIN.on(function(){S={};});D.querySelectorAll('[data-fx-skin]').forEach(skinButton);
