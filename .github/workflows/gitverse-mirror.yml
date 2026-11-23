@@ -1,4 +1,6 @@
-# Зеркало в GitVerse: после каждого изменения в main копирует ветку main в GitVerse.
+# Зеркало в GitVerse: копирует ветку main в GitVerse ТОЛЬКО по кнопке (Actions - Зеркало в GitVerse - Run workflow).
+# Пока дорабатываем, смотрим предпросмотр на GitHub: https://centrspektr.github.io/spektr/proba/new.html
+# На GitVerse выкладываем одним разом, когда владелец скажет.
 # Нужно в настройках репозитория GitHub (Settings -> Secrets and variables -> Actions):
 #   секрет GITVERSE_TOKEN - токен доступа GitVerse (создаёт владелец, в файлы не писать);
 #   переменная GITVERSE_USER - имя пользователя GitVerse;
@@ -7,8 +9,6 @@
 name: Зеркало в GitVerse
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:

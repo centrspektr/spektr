@@ -38,12 +38,25 @@ B.insertBefore(bar,sky.nextSibling);
 /* значки педагога (ученики, ошибки) - рядом с шестерёнкой */
 ['#stBtn','#bgBtn'].forEach(function(s){var e=$(s);if(e)$('.mnr',bar).insertBefore(e,$('.mngear',bar))});
 var hold=$('.mnhold',bar),ht=0;
+/* логотип сверху: удержание на месте 0,9 с = вход по PIN; потянуть = перетащить в любое место (место запоминается), двойное нажатие = вернуть наверх */
+var LK='spk_lbl',drag=null,lastTap=0;
+function placeLbl(p){if(p){hold.classList.add('free');hold.style.left=(p.x*innerWidth-39)+'px';hold.style.top=(p.y*innerHeight-39)+'px'}else{hold.classList.remove('free');hold.style.left='';hold.style.top=''}}
+function clampP(x,y){return{x:Math.min(Math.max(x,46/innerWidth),1-46/innerWidth),y:Math.min(Math.max(y,46/innerHeight),1-46/innerHeight)}}
+try{var sp=JSON.parse(LS.get(LK)||'null');if(sp&&isFinite(sp.x)&&isFinite(sp.y))placeLbl(clampP(sp.x,sp.y))}catch(_){}
+addEventListener('resize',function(){try{var p=JSON.parse(LS.get(LK)||'null');if(p)placeLbl(clampP(p.x,p.y))}catch(_){}});
 function hstop(){clearTimeout(ht);hold.classList.remove('go')}
 hold.addEventListener('contextmenu',function(e){e.preventDefault()});
-hold.addEventListener('pointerdown',function(e){if(e.button>0)return;hold.classList.add('go');ht=setTimeout(function(){hstop();try{navigator.vibrate&&navigator.vibrate(25)}catch(_){}
+hold.addEventListener('pointerdown',function(e){if(e.button>0)return;
+  var now=Date.now();if(now-lastTap<320){lastTap=0;hstop();LS.set(LK,'');placeLbl(null);toast('Логотип на месте');return}lastTap=now;
+  try{hold.setPointerCapture(e.pointerId)}catch(_){}
+  var r=hold.getBoundingClientRect();drag={id:e.pointerId,sx:e.clientX,sy:e.clientY,ox:e.clientX-r.left,oy:e.clientY-r.top,on:false};
+  hold.classList.add('go');ht=setTimeout(function(){if(drag&&drag.on)return;hstop();drag=null;try{navigator.vibrate&&navigator.vibrate(25)}catch(_){}
   try{if(typeof SESS!=='undefined'&&SESS)toast('Вы уже вошли');else if(typeof openLogin==='function')openLogin()}catch(_){}},900)});
-['pointerup','pointerleave','pointercancel'].forEach(function(n){hold.addEventListener(n,function(e){if(n==='pointercancel'&&e.pointerType!=='mouse')return;hstop()})});
-hold.addEventListener('touchend',hstop);
+hold.addEventListener('pointermove',function(e){if(!drag||e.pointerId!==drag.id)return;
+  if(!drag.on){if(Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)<8)return;drag.on=true;hstop();hold.classList.add('free','drag')}
+  var p=clampP((e.clientX-drag.ox+39)/innerWidth,(e.clientY-drag.oy+39)/innerHeight);placeLbl(p);drag.p=p});
+function dend(e){if(drag&&drag.on){hold.classList.remove('drag');if(drag.p)LS.set(LK,JSON.stringify(drag.p));lastTap=0}drag=null;hstop()}
+['pointerup','pointercancel'].forEach(function(n){hold.addEventListener(n,dend)});
 
 /* ---------- меню ---------- */
 var menu=document.createElement('nav');menu.className='mnmenu';menu.setAttribute('aria-label','Меню');
@@ -51,15 +64,17 @@ menu.innerHTML='<div class="mh"><a href="#kruzhki" data-go style="--c:var(--m1)"
  '<div class="mk"><a href="#groupsT" style="--c:var(--m1)"><i></i>Кружки</a><a href="#todayT" style="--c:var(--m2)"><i></i>Сегодня</a><a href="#weekT" style="--c:var(--m3)"><i></i>Расписание</a><a href="#dashT" data-dash style="--c:var(--m4)"><i></i>Дашборды</a><a href="#linksT" style="--c:var(--m5)"><i></i>Сайт и ссылки</a><button class="mi" type="button" data-sup style="--c:var(--m6)"><i></i>Поддержать</button><hr><button class="mi" type="button" data-home><i></i>На главную Спектра</button></div><hr>'+
  '<button class="mi" type="button" data-share><i></i>Поделиться и QR</button><button class="mi" type="button" data-inst><i></i>Установить на телефон</button><button class="mi" type="button" data-out hidden><i></i>Выйти из правки</button><hr>'+
  '<div class="ms">Вид сайта</div><div class="sw"><button class="on" type="button" data-v="new"><s style="background:var(--mrb)"></s>Строгий</button><button type="button" data-v="old"><s style="background:linear-gradient(90deg,#f472b6,#22d3ee)"></s>Прежний</button></div>'+
- '<div class="hint">Вход для педагога: удерживай логотип.</div>';
+ '<div class="hint">Логотип: удержать - вход для педагога, потянуть - переместить, два касания - вернуть.</div>';
 B.insertBefore(menu,bar.nextSibling);
+var veil=document.createElement('div');veil.className='mnveil';B.insertBefore(veil,menu);
 var gear=$('.mngear',bar);
-function menuOff(){menu.classList.remove('on');gear.classList.remove('on');gear.setAttribute('aria-expanded','false')}
+function menuOff(){menu.classList.remove('on');veil.classList.remove('on');gear.classList.remove('on');gear.setAttribute('aria-expanded','false')}
 gear.addEventListener('click',function(e){e.stopPropagation();var on=!menu.classList.contains('on');
   var dl=$('#dashT');$('[data-dash]',menu).style.display=dl&&!dl.hidden?'':'none';
   var ib=$('#inBtn');$('[data-inst]',menu).style.display=ib&&getComputedStyle(ib).display!=='none'?'':'none';
   $('[data-out]',menu).hidden=!(typeof SESS!=='undefined'&&SESS);
-  menu.classList.toggle('on',on);gear.classList.toggle('on',on);gear.setAttribute('aria-expanded',on?'true':'false')});
+  if(on){var k=0;$$('a,button.mi,.ms,.sw,.hint',menu).forEach(function(el){if(el.offsetParent!==null)el.style.setProperty('--k',k++)})}
+  menu.classList.toggle('on',on);veil.classList.toggle('on',on);gear.classList.toggle('on',on);gear.setAttribute('aria-expanded',on?'true':'false')});
 document.addEventListener('click',function(e){if(menu.classList.contains('on')&&!menu.contains(e.target))menuOff()});
 menu.addEventListener('click',function(e){var a=e.target.closest('a,button');if(!a)return;
   if(a.hasAttribute('data-v')){if(a.dataset.v==='old')setView('old');return}
@@ -102,11 +117,13 @@ var intro=0;
 function runIntro(){if(intro)return;intro=1;var T=function(f,ms){setTimeout(f,RED?0:ms)};
   T(function(){lt.classList.add('s1')},250);
   T(function(){lt.classList.add('s2')},700);
-  T(function(){$$('span',ttl).forEach(function(s){s.classList.add('in');s.style.color='var(--text)'})},2000);
-  T(function(){lt.classList.add('s3')},2700);
-  T(function(){$('.mnbar2',home).classList.add('in')},2900);
-  $$('.mnhx',home).forEach(function(e,i){T(function(){e.classList.add('in')},3100+i*140)});
-  T(function(){ttl.classList.add('shn')},4700)}
+  T(function(){$$('span',ttl).forEach(function(s){s.classList.add('in');s.style.color='var(--text)'})},2950);
+  T(function(){lt.classList.add('s3')},2500);
+  /* после лучей: лейба сверху, затем СПЕКТР и остальное */
+  T(function(){B.classList.add('mnin')},2700);
+  T(function(){$('.mnbar2',home).classList.add('in')},3500);
+  $$('.mnhx',home).forEach(function(e,i){T(function(){e.classList.add('in')},3700+i*140)});
+  T(function(){ttl.classList.add('shn')},5200)}
 
 /* ---------- часы и "что сейчас" (берём из уже посчитанных блоков "Сегодня") ---------- */
 var DF=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
@@ -125,7 +142,7 @@ var rb=document.createElement('div');rb.className='mnrb';rb.innerHTML=C.map(func
 var fade=document.createElement('div');fade.className='mnfade';B.appendChild(fade);
 var busy=0;
 function refresh(){try{window.ScrollTrigger&&ScrollTrigger.refresh()}catch(e){}$$('main .rv').forEach(function(e){var r=e.getBoundingClientRect();if(r.top<innerHeight)e.style.opacity=''})}
-function setMode(k){B.classList.toggle('mnk',k);B.classList.toggle('mnh',!k);if(!k)runIntro();setTimeout(refresh,60)}
+function setMode(k){if(k)B.classList.add('mnin');B.classList.toggle('mnk',k);B.classList.toggle('mnh',!k);if(!k)runIntro();setTimeout(refresh,60)}
 function goTo(hash){var el=hash&&hash!=='#kruzhki'&&document.getElementById(hash.slice(1));if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'})},120);else scrollTo(0,0)}
 function enter(hash,push){if(busy)return;menuOff();if(B.classList.contains('mnk')){goTo(hash);return}busy=1;
   if(push!==false)try{history.pushState({mn:1},'',hash||'#kruzhki')}catch(e){}
@@ -145,6 +162,7 @@ $('.mnback',bar).addEventListener('click',function(){leave()});
 addEventListener('popstate',function(){var h=location.hash;if(KR_HASH.indexOf(h)>=0)enter(h,false);else if(!h)leave(false)});
 var h0=location.hash;
 if(KR_HASH.indexOf(h0)>=0){setMode(true);goTo(h0)}else setMode(false);
+R.classList.add('mnready');
 
 /* ---------- прокрутка: полоса сверху, логотип прячется ---------- */
 addEventListener('scroll',function(){var m=document.documentElement.scrollHeight-innerHeight;top.style.transform='scaleX('+(m>0&&B.classList.contains('mnk')?scrollY/m:0)+')';B.classList.toggle('mnsc',scrollY>innerHeight*.5)},{passive:true});
