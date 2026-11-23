@@ -75,7 +75,7 @@ var dv=($('#fDev')&&$('#fDev').textContent.split('.')[0])||'Время - гла�
 var home=document.createElement('section');home.className='mnhome';home.setAttribute('aria-label','СПЕКТР');
 home.innerHTML='<div class="mnnow mnhx"><b class="mnclk">--:--</b><i></i><span class="mncap mndn"></span></div>'+
  '<div class="mncap mnhx">Ресурсный центр</div>'+
- '<div class="mnttlw"><div class="mnlt"><span class="beam"></span><span class="dot"></span></div><h1 class="mnttl">СПЕКТР</h1></div>'+
+ '<div class="mnttlw"><div class="mnlt"><span class="rays"></span><span class="dot"></span></div><h1 class="mnttl">СПЕКТР</h1></div>'+
  '<div class="mnbar2"></div>'+
  '<div class="mncap mnhx">Иртышское поселение · Черлакский район</div>'+
  '<button class="mnkd mnhx" type="button" data-go><b>Кружковая деятельность</b><small>кружки · расписание · что сейчас</small></button>'+
@@ -93,16 +93,20 @@ var rot=$('.hero .rot');if(rot)$('.mnrot',krh).replaceWith(rot);else $('.mnrot',
 
 /* ---------- появление СПЕКТРа: луч -> призма -> спектр -> буквы ---------- */
 var ttl=$('.mnttl',home);ttl.innerHTML=ttl.textContent.split('').map(function(c,i){return '<span style="color:'+C[i%7]+';transition-delay:'+(i*.08)+'s,'+(i*.08)+'s,'+(1.1+i*.08)+'s">'+c+'</span>'}).join('');
-var lt=$('.mnlt',home),A=[-10,-6.5,-3.2,0,3.2,6.5,10];
-lt.insertAdjacentHTML('beforeend',A.map(function(a,i){return '<span class="ray" style="--a:'+a+'deg;--i:'+i+';background:linear-gradient(90deg,'+C[i]+',transparent)"></span>'}).join(''));
+/* точка в центре, из неё по кругу, по часовой стрелке, расходятся радужные лучи */
+var lt=$('.mnlt',home),NR=36,rs='';
+for(var ri=0;ri<NR;ri++){var col=C[Math.floor(ri/NR*7)],L=ri%2?'min(30vw,300px)':'min(48vw,480px)';
+  rs+='<span class="ray" style="--a:'+(-90+ri*360/NR)+'deg;--i:'+ri+';--L:'+L+';background:linear-gradient(90deg,'+col+',transparent)"></span>'}
+$('.rays',lt).innerHTML=rs;
 var intro=0;
 function runIntro(){if(intro)return;intro=1;var T=function(f,ms){setTimeout(f,RED?0:ms)};
   T(function(){lt.classList.add('s1')},250);
-  T(function(){lt.classList.add('s2')},1100);
-  T(function(){$$('span',ttl).forEach(function(s){s.classList.add('in');s.style.color='var(--text)'})},1500);
-  T(function(){lt.classList.add('s3');$('.mnbar2',home).classList.add('in')},2400);
-  $$('.mnhx',home).forEach(function(e,i){T(function(){e.classList.add('in')},2600+i*140)});
-  T(function(){ttl.classList.add('shn')},4200)}
+  T(function(){lt.classList.add('s2')},700);
+  T(function(){$$('span',ttl).forEach(function(s){s.classList.add('in');s.style.color='var(--text)'})},2000);
+  T(function(){lt.classList.add('s3')},2700);
+  T(function(){$('.mnbar2',home).classList.add('in')},2900);
+  $$('.mnhx',home).forEach(function(e,i){T(function(){e.classList.add('in')},3100+i*140)});
+  T(function(){ttl.classList.add('shn')},4700)}
 
 /* ---------- часы и "что сейчас" (берём из уже посчитанных блоков "Сегодня") ---------- */
 var DF=['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
