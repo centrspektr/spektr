@@ -88,12 +88,12 @@ body.mnk .mnhome{display:none}
 .mnttl{position:relative;z-index:1}
 .mnlt .rays{position:absolute;left:0;top:0;width:0;height:0;transform:scale(.75)}
 .mnlt .ray{position:absolute;left:0;top:-1px;width:var(--L);height:2px;border-radius:2px;transform-origin:0 50%;transform:rotate(var(--a)) translateX(12px) scaleX(0);opacity:0}
-.mnlt .dot{position:absolute;left:-4px;top:-4px;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 22px 8px rgba(255,255,255,.55);transform:scale(0);opacity:1}
+.mnlt .dot{position:absolute;left:-2px;top:-2px;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 8px 2px rgba(255,255,255,.6);transform:scale(0);opacity:1}
 .mnlt.s1 .dot{transform:scale(1);transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
 .mnlt.s2 .ray{transform:rotate(var(--a)) translateX(16px) scaleX(1);opacity:.95;transition:transform .9s var(--me) calc(var(--i)*32ms),opacity .3s calc(var(--i)*32ms)}
-.mnlt.s2 .dot{transform:scale(1.6);transition:transform 1.2s var(--me)}
+.mnlt.s2 .dot{transform:scale(1.25);transition:transform 1.2s var(--me)}
 .mnlt.s3 .rays{transform:scale(1.4);opacity:0;transition:transform 1.5s var(--me),opacity 1.3s}
-.mnlt.s3 .dot{transform:scale(3);opacity:0;transition:transform 1s,opacity .8s}
+.mnlt.s3 .dot{transform:scale(2);opacity:0;transition:transform 1s,opacity .8s}
 .mnhx{opacity:0;transform:translateY(14px);transition:opacity 1s var(--me),transform 1s var(--me)}
 .mnhx.in{opacity:1;transform:none}
 .mnkd{position:relative;margin-top:46px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 34px 18px;border:1px solid var(--line);border-radius:18px;background:rgba(20,20,32,.5);cursor:pointer;color:var(--text);font:inherit;overflow:hidden;isolation:isolate;transition:border-color .5s,transform .6s var(--me)}
@@ -243,3 +243,42 @@ html.mn .rv{will-change:auto}
  .mnmenu{left:18px;right:18px;width:auto}
 }
 @media(prefers-reduced-motion:reduce){.mnsky *,.mnttl span,.mnhx,.mnbar2,.mnlt *{animation:none!important;transition:none!important}.mnttl span,.mnhx{opacity:1!important;transform:none!important}.mnbar2{transform:none!important}}
+
+/* до конца появления: чистый экран, без мелькания прежней страницы */
+html.mn:not(.mnready) body{visibility:hidden}
+.mnr{transition:opacity .8s var(--me),transform .8s var(--me)}
+body.mnh:not(.mnin) .mnhold{opacity:0;transform:translateY(-12px);pointer-events:none}
+body.mnh:not(.mnin) .mnr{opacity:0;transform:translateY(-12px);pointer-events:none}
+html.mn body.mnh:not(.mnin) .spkbug,html.mn body.mnh:not(.mnin) .spkbp{opacity:0!important;pointer-events:none}
+
+/* меню-шестерёнка: без окна. Линия выкатывается от шестерёнки справа налево, под ней сверху вниз появляются слова */
+.mnveil{position:fixed;inset:0;z-index:49;background:rgba(8,8,15,.84);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .5s var(--me)}
+.mnveil.on{opacity:1;pointer-events:auto}
+html.mn .mnmenu{right:18px;top:76px;width:min(330px,calc(100vw - 36px));left:auto;max-height:calc(100svh - 96px);background:none;border:0;border-radius:0;box-shadow:none;padding:18px 0 0;opacity:1;transform:none;pointer-events:none;text-align:right;overflow:visible;visibility:hidden;transition:visibility 0s .7s}
+html.mn .mnmenu.on{pointer-events:auto;visibility:visible;transition:none}
+html.mn .mnmenu::before{content:"";position:absolute;right:0;top:0;width:100%;height:1px;background:linear-gradient(270deg,#fff,rgba(255,255,255,.5) 40%,var(--m3) 60%,var(--m4) 72%,var(--m5) 84%,var(--m7) 100%);transform:scaleX(0);transform-origin:right;transition:transform .45s cubic-bezier(.6,0,.2,1) .15s}
+html.mn .mnmenu.on::before{transform:scaleX(1);transition:transform .7s cubic-bezier(.6,0,.2,1)}
+html.mn .mnmenu .mi,html.mn .mnmenu a,html.mn .mnmenu .ms,html.mn .mnmenu .sw,html.mn .mnmenu .hint{opacity:0;transform:translateY(-10px);transition:opacity .25s,transform .25s}
+html.mn .mnmenu.on .mi,html.mn .mnmenu.on a,html.mn .mnmenu.on .ms,html.mn .mnmenu.on .sw,html.mn .mnmenu.on .hint{opacity:1;transform:none;transition:opacity .6s var(--me) calc(.45s + var(--k,0)*55ms),transform .7s var(--me) calc(.45s + var(--k,0)*55ms)}
+html.mn .mnmenu a,html.mn .mnmenu button.mi{display:flex;width:100%;justify-content:flex-end;align-items:center;gap:14px;padding:9px 0;background:none!important;border-radius:0;font:400 12px var(--fb);letter-spacing:.24em;color:var(--text);text-align:right}
+html.mn .mnmenu a i,html.mn .mnmenu button.mi i{order:2;width:18px;height:1px;border-radius:0;background:var(--c,rgba(255,255,255,.4));transform-origin:right;transition:transform .45s var(--me)}
+html.mn .mnmenu a:hover i,html.mn .mnmenu button.mi:hover i{transform:scaleX(2)}
+html.mn .mnmenu a:hover,html.mn .mnmenu button.mi:hover{color:#fff}
+html.mn .mnmenu hr{border:0;height:0;margin:10px 0}
+html.mn .mnmenu .ms{padding:6px 0 2px;font-size:9.5px;letter-spacing:.3em;color:var(--dim)}
+html.mn .mnmenu .sw{display:flex;justify-content:flex-end;gap:20px;padding:6px 0}
+html.mn .mnmenu .sw button{border:0;border-radius:0;padding:0 0 4px;background:none;font:400 11px var(--fb);letter-spacing:.22em;color:var(--dim);position:relative}
+html.mn .mnmenu .sw button s{position:absolute;left:0;right:0;bottom:0;height:1px;margin:0;width:auto;transform:scaleX(0);transition:transform .4s var(--me)}
+html.mn .mnmenu .sw button.on{color:var(--text)}
+html.mn .mnmenu .sw button.on s{transform:none}
+html.mn .mnmenu .hint{padding:8px 0 0;font:italic 400 13px var(--mpf);color:var(--dim)}
+html.mn .mnmenu .mk,html.mn .mnmenu .mh{text-align:right}
+@media(max-width:760px){html.mn .mnmenu{left:auto;right:18px;width:calc(100vw - 36px)}html.mn .mnmenu a,html.mn .mnmenu button.mi{font-size:13px;padding:11px 0}}
+@media(prefers-reduced-motion:reduce){html.mn .mnmenu *,html.mn .mnmenu::before,.mnveil{transition:none!important}}
+
+/* логотип можно перетащить: свободное место запоминается, тогда он виден всегда */
+.mnhold{touch-action:none}
+.mnhold.free{margin-left:0}
+body.mnsc .mnhold.free,body.mnk .mnhold.free{opacity:1;transform:none;pointer-events:auto}
+.mnhold.drag{transition:none!important;transform:scale(1.08)!important;cursor:grabbing}
+.mnhold.drag .bgc{box-shadow:0 0 0 1px rgba(255,255,255,.3),0 0 40px rgba(167,123,255,.45)}

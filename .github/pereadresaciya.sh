@@ -58,5 +58,8 @@ self.addEventListener('activate', e => e.waitUntil((async () => {
   for (const c of await self.clients.matchAll({ type: 'window' })) c.navigate(c.url);
 })()));
 JS
+# Предпросмотр: настоящий сайт из main по адресу /spektr/proba/ (на GitHub, без GitVerse)
+mkdir -p _site/proba
+tar --exclude=./.git --exclude=./.github --exclude=./_site -cf - . | tar -xf - -C _site/proba
 touch _site/.nojekyll
-find _site -type f | sort
+find _site -maxdepth 1 -type f | sort
