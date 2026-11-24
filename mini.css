@@ -256,11 +256,11 @@ html.mn body.mnh:not(.mnin) .spkbug,html.mn body.mnh:not(.mnin) .spkbp{opacity:0
 /* меню-шестерёнка: без окна. Линия выкатывается от шестерёнки справа налево, под ней сверху вниз появляются слова */
 .mnveil{position:fixed;inset:0;z-index:49;background:rgba(8,8,15,.84);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .5s var(--me)}
 .mnveil.on{opacity:1;pointer-events:auto}
-html.mn .mnmenu{right:18px;top:76px;width:min(330px,calc(100vw - 36px));left:auto;max-height:calc(100svh - 96px);background:none;border:0;border-radius:0;box-shadow:none;padding:18px 0 0;opacity:1;transform:none;pointer-events:none;text-align:right;overflow:visible;visibility:hidden;transition:visibility 0s .7s}
+html.mn .mnmenu{right:18px;top:76px;width:min(330px,calc(100vw - 36px));left:auto;max-height:calc(100svh - 96px);background:none;border:0;border-radius:0;box-shadow:none;padding:18px 0 0;opacity:1;transform:none;pointer-events:none;text-align:right;overflow:visible;visibility:hidden;transition:visibility 0s 1.6s}
 html.mn .mnmenu.on{pointer-events:auto;visibility:visible;transition:none}
-html.mn .mnmenu::before{content:"";position:absolute;right:0;top:0;width:100%;height:1px;background:linear-gradient(270deg,#fff,rgba(255,255,255,.5) 40%,var(--m3) 60%,var(--m4) 72%,var(--m5) 84%,var(--m7) 100%);transform:scaleX(0);transform-origin:right;transition:transform .45s cubic-bezier(.6,0,.2,1) .15s}
+html.mn .mnmenu::before{content:"";position:absolute;right:0;top:0;width:100%;height:1px;background:linear-gradient(270deg,#fff,rgba(255,255,255,.5) 55%,rgba(255,255,255,.15));transform:scaleX(0);transform-origin:right;transition:transform .7s cubic-bezier(.6,0,.2,1) calc(.3s + var(--n,8)*38ms)}
 html.mn .mnmenu.on::before{transform:scaleX(1);transition:transform .7s cubic-bezier(.6,0,.2,1)}
-html.mn .mnmenu .mi,html.mn .mnmenu a,html.mn .mnmenu .ms,html.mn .mnmenu .sw,html.mn .mnmenu .hint{opacity:0;transform:translateY(-10px);transition:opacity .25s,transform .25s}
+html.mn .mnmenu .mi,html.mn .mnmenu a,html.mn .mnmenu .ms,html.mn .mnmenu .sw,html.mn .mnmenu .hint{opacity:0;transform:translateY(-14px);transition:opacity .4s var(--me) calc((var(--n,8) - var(--k,0))*38ms),transform .5s var(--me) calc((var(--n,8) - var(--k,0))*38ms)}
 html.mn .mnmenu.on .mi,html.mn .mnmenu.on a,html.mn .mnmenu.on .ms,html.mn .mnmenu.on .sw,html.mn .mnmenu.on .hint{opacity:1;transform:none;transition:opacity .6s var(--me) calc(.45s + var(--k,0)*55ms),transform .7s var(--me) calc(.45s + var(--k,0)*55ms)}
 html.mn .mnmenu a,html.mn .mnmenu button.mi{display:flex;width:100%;justify-content:flex-end;align-items:center;gap:14px;padding:9px 0;background:none!important;border-radius:0;font:400 12px var(--fb);letter-spacing:.24em;color:var(--text);text-align:right}
 html.mn .mnmenu a i,html.mn .mnmenu button.mi i{order:2;width:18px;height:1px;border-radius:0;background:var(--c,rgba(255,255,255,.4));transform-origin:right;transition:transform .45s var(--me)}
@@ -284,3 +284,44 @@ html.mn .mnmenu .mk,html.mn .mnmenu .mh{text-align:right}
 body.mnsc .mnhold.free,body.mnk .mnhold.free{opacity:1;transform:none;pointer-events:auto}
 .mnhold.drag{transition:none!important;transform:scale(1.08)!important;cursor:grabbing}
 .mnhold.drag .bgc{box-shadow:0 0 0 1px rgba(255,255,255,.3),0 0 40px rgba(167,123,255,.45)}
+
+/* ===== строгие нижние разделы (24.11): тонкие линии, без круглых кнопок и ярких пятен ===== */
+html.mn #groupsT,html.mn #dashT,html.mn #joinT,html.mn #todayT,html.mn #weekT,html.mn #newsT,html.mn #linksT{--c:var(--text)}
+html.mn main *:not(i):not(img):not(.dt),html.mn .mcard,html.mn .shp,html.mn .shbar,html.mn #toast,html.mn .mngear,html.mn .mnback,html.mn .mnr .ibtn{border-radius:0!important}
+html.mn .shbar img{border-radius:0}
+html.mn .sh2::before{height:1px;width:90px;background:var(--text)}
+html.mn .sh2 .num{color:var(--dim)!important}
+html.mn .mnkrh .rot .rw{color:var(--dim)}
+html.mn .ibtn,html.mn .ibtn.pri{background:none!important;border:1px solid var(--line)!important;color:var(--text)!important;box-shadow:none!important}
+html.mn .ibtn.pri{border-color:rgba(255,255,255,.7)!important}
+html.mn .ibtn:hover{border-color:#fff!important;background:rgba(255,255,255,.06)!important}
+html.mn .ebtn{background:none!important;border:1px solid var(--line);color:var(--dim)}
+html.mn .wkt .wkch,html.mn .sh2 .beta i{background:none!important;border:1px solid var(--line)!important;color:var(--dim)!important}
+html.mn .grp::before{height:1px;background:linear-gradient(90deg,rgba(255,255,255,.6),transparent)}
+html.mn .grp:hover{transform:none!important;box-shadow:none!important;border-color:rgba(255,255,255,.3)!important}
+html.mn .grp .cov{background:#0e0e16!important}
+html.mn .grp .cov .e{color:var(--dim);filter:grayscale(1);opacity:.3}
+html.mn .grp .tms,html.mn .grp .tms *{background:none!important;border:0!important;box-shadow:none!important}
+html.mn .lrow .dt{width:14px!important;height:1px!important;background:var(--dim)!important;box-shadow:none!important;animation:none!important}
+html.mn .lrow.on .dt{background:var(--text)!important;width:22px!important}
+html.mn .nxt::after{height:1px;background:var(--text);opacity:.5;animation:none}
+html.mn .wd2 .wr{border-left:1px solid var(--line)}
+html.mn .wd2.td,html.mn .wd2.td .wr{border-color:rgba(255,255,255,.5)!important}
+html.mn .wd2 h4 small{color:var(--dim)}
+html.mn .mq span::after,html.mn .mq span:nth-child(n)::after{width:1px;height:12px;margin-left:36px;transform:none;background:var(--line)}
+html.mn footer::before{height:1px;width:60px;background:var(--text);animation:none;opacity:.6}
+html.mn .mntop{height:1px;background:var(--text);animation:none;opacity:.7}
+html.mn .mngear svg{stroke-width:1.2}
+/* плашка "на экран телефона": текст не налезает на соседние элементы на узком экране */
+html.mn .shbar{flex-wrap:wrap;gap:10px 12px}
+html.mn .shbar div{flex:1 1 150px;min-width:0;overflow-wrap:anywhere}
+html.mn .shbar .ibtn{flex:none}
+@media(max-width:420px){html.mn .shbar div{flex-basis:calc(100% - 56px)}html.mn .shbar .ibtn.pri{margin-left:auto}}
+/* нейтральные штрихи вместо цветных точек */
+html.mn .mnmenu a i,html.mn .mnmenu button.mi i{background:rgba(255,255,255,.45)!important}
+html.mn .mnpill,html.mn .mnkd{border-radius:0}
+html.mn .mnpill i{width:14px;height:1px;border-radius:0;background:var(--text)!important;animation:none}
+html.mn .mnpill em{color:var(--dim)!important}
+html.mn .mnkrh .mnbar2{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);box-shadow:none;animation:none}
+html.mn .mnkd::before{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),transparent);animation:none}
+html.mn .shbar .ibtn{border-radius:0!important}
