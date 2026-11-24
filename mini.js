@@ -73,7 +73,7 @@ gear.addEventListener('click',function(e){e.stopPropagation();var on=!menu.class
   var dl=$('#dashT');$('[data-dash]',menu).style.display=dl&&!dl.hidden?'':'none';
   var ib=$('#inBtn');$('[data-inst]',menu).style.display=ib&&getComputedStyle(ib).display!=='none'?'':'none';
   $('[data-out]',menu).hidden=!(typeof SESS!=='undefined'&&SESS);
-  if(on){var k=0;$$('a,button.mi,.ms,.sw,.hint',menu).forEach(function(el){if(el.offsetParent!==null)el.style.setProperty('--k',k++)})}
+  if(on){var k=0;$$('a,button.mi,.ms,.sw,.hint',menu).forEach(function(el){if(el.offsetParent!==null)el.style.setProperty('--k',k++)});menu.style.setProperty('--n',k)}
   menu.classList.toggle('on',on);veil.classList.toggle('on',on);gear.classList.toggle('on',on);gear.setAttribute('aria-expanded',on?'true':'false')});
 document.addEventListener('click',function(e){if(menu.classList.contains('on')&&!menu.contains(e.target))menuOff()});
 menu.addEventListener('click',function(e){var a=e.target.closest('a,button');if(!a)return;
